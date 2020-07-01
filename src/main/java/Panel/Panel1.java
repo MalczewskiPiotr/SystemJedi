@@ -1,38 +1,55 @@
 package Panel;
 
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.SQLInput;
+import java.sql.Statement;
 
 import javax.swing.*;
 
+import Bazy.Jedi;
+import Bazy.Pobierz;
+import Bazy.PobierzJedi;
+import Bazy.Zakon;
+
 
 public class Panel1 extends JPanel {
-
-	public Panel1() {
+	private Pobierz pobierz;
+	public Panel1(Pobierz pobierz) {
+		this.pobierz=pobierz;
+		pobierz.pobierz();
+		
 		
 		setLayout(null);
-		// separator
-        
-        JSeparator s = new JSeparator(); 
-        s.setOrientation(SwingConstants.VERTICAL); 
-        add(s); 
+		JSeparator s = new JSeparator(SwingConstants.VERTICAL);
+		s.setBounds(500, 10, 200, 680);
+        add(s);
 
-        
 		JLabel zakony = new JLabel("Zakony Jedi");
 		zakony.setBounds(200, 20, 120, 30);
 		add(zakony);
-				
+	
 		JLabel zakonyRej = new JLabel("Rejestracja Zakonu");
 		zakonyRej.setBounds(200, 350, 120, 30);
 		add(zakonyRej);
 		
-		JTextField t1,t2;  
-	    t1=new JTextField();  
-	    t1.setBounds(20,60, 450,280);  
-	    t2=new JTextField();  
-	    t2.setBounds(150,580, 250,30);  
-	    add(t1); add(t2);  
+		JList listaZ = new JList(Zakon.listaZ);
+		listaZ.setBounds(20,60, 460,280);
+		add(listaZ);
 		
+		
+		JTextField t1=new JTextField();  
+	    t1.setBounds(150,580, 250,30);  
+	    add(t1);
+	    
 		JLabel nazwaZakon = new JLabel("Nazwa");
 		nazwaZakon.setBounds(40, 400, 50, 20);
 		add(nazwaZakon);
@@ -49,6 +66,26 @@ public class Panel1 extends JPanel {
 		importZ.setBounds(40, 560, 90, 30);
 		add(importZ);
 		
+		class ImportZ implements ActionListener{
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource()==importZ) { 
+					JFileChooser fc=new JFileChooser();    
+				    int i=fc.showOpenDialog(importZ);    
+				    if(i==JFileChooser.APPROVE_OPTION){    
+				        File f=fc.getSelectedFile();    
+				        String filepath=f.getPath();    
+				        t1.setText(filepath);
+            
+				    }    
+				}    
+				}
+				
+		}
+		
+		importZ.addActionListener(new ImportZ());
+
 		JButton eksportZ = new JButton("Eksport");
 		eksportZ.setBounds(40, 600, 90, 30);
 		add(eksportZ);
@@ -64,10 +101,7 @@ public class Panel1 extends JPanel {
 		JList<String> list = new JList<>();  
         list.setBounds(150, 450, 250, 100);  
         add(list);  	
-        
 
-        
-		
 	    JLabel jedi = new JLabel("Rycerze Jedi");
 		jedi.setBounds(700, 20, 120, 30);
 		add(jedi);
@@ -83,7 +117,7 @@ public class Panel1 extends JPanel {
 		JTextField nazwaJediTF = new JTextField();
 		nazwaJediTF.setBounds(650, 400, 250, 30);
 		add(nazwaJediTF);
-
+		
 		JLabel miecz = new JLabel("Kolor miecza");
 		miecz.setBounds(540, 440, 100, 20);
 		add(miecz);
@@ -92,7 +126,7 @@ public class Panel1 extends JPanel {
 	    JComboBox wybierzKolor =new JComboBox(kolorMiecza); 
 	    wybierzKolor.setBounds(650, 440, 250, 30);    
 	    add(wybierzKolor);
-		
+	    
 	    JLabel moc = new JLabel("Moc:");
 	    moc.setBounds(540, 480, 100, 20);
 		add(moc);
@@ -115,21 +149,41 @@ public class Panel1 extends JPanel {
 	bg.add(r1);bg.add(r2);    
 	add(r1);add(r2);  
 	
+	
+	
 	JButton importJ = new JButton("Import");
 	importJ.setBounds(540, 560, 90, 30);
 	add(importJ);
 	
+	
+	JList listaJ = new JList(Jedi.listaJ);
+	listaJ.setBounds(520,60, 460,280);	 
+	add(listaJ);
+	
+	JTextField t2 =new JTextField();  
+	t2.setBounds(650, 580, 250 ,30);  
+    add(t2);
+    
+    class ImportJ implements ActionListener{
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource()==importJ) { 
+				JFileChooser fc=new JFileChooser();    
+			    int i=fc.showOpenDialog(importJ);    
+			    if(i==JFileChooser.APPROVE_OPTION){    
+			        File f=fc.getSelectedFile();    
+			        String filepath=f.getPath();    
+			        t2.setText(filepath);
+			    }    
+			}    
+			}	
+	}
+    importJ.addActionListener(new ImportJ());
+    
 	JButton eksportJ = new JButton("Eksport");
 	eksportJ.setBounds(540, 600, 90, 30);
 	add(eksportJ);
-
-
-	JTextField t3,t4;  
-	t3=new JTextField();  
-	t3.setBounds(520,60, 450,280);  
-	t4=new JTextField();  
-	t4.setBounds(650, 580, 250 ,30);  
-    add(t3); add(t4);
 	
 	JButton ZarejestrujJ = new JButton("Zarejestruj");
 	ZarejestrujJ.setBounds(650, 650, 110, 30);
@@ -138,6 +192,43 @@ public class Panel1 extends JPanel {
 	JButton WyczyscJ = new JButton("Wyczyść");
 	WyczyscJ.setBounds(780, 650, 90, 30);
 	add(WyczyscJ);
+	
+	class ZarejestrujJ implements ActionListener{
+					
+		@Override
+		public void actionPerformed(ActionEvent e) {
+					
+			if(e.getSource()==ZarejestrujJ) { 
+				Connection c;
+				try {
+					c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/SZJ","postgres","zaq1@WSX");
+					Statement s =  c.createStatement();
+					String stronaStr = null;
+					if (r1.isSelected()==true) 
+						stronaStr="Jasna";
+					else 
+						stronaStr="Ciemna";
+						
+					
+					String query = " INSERT INTO JEDI  (NAZWA, MIECZ, MOC, STRONA) VALUES"
+					        + " ('"+nazwaJediTF.getText()+"','"+wybierzKolor.getSelectedItem()+"', "+slider.getValue()+", '"+stronaStr+"')";
+					PreparedStatement preparedStmt = c.prepareStatement(query);
+					preparedStmt.execute();
+				      
+				      c.close();
+				  
+;
+						      
+					pobierz.pobierz();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			    }    
+			}    
+			}	
+	
+	ZarejestrujJ.addActionListener(new ZarejestrujJ());
+	
 
 	}
 	@Override
