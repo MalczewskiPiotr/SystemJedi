@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
+
+import com.jdbc.Osoba;
 public class Jedi {
 	public static List<Jedi> listaJedi = new ArrayList<Jedi>();
 	public static DefaultListModel<String> listaJ = new DefaultListModel<>();
@@ -24,6 +26,11 @@ public class Jedi {
 		listaJedi.add(this);
 		listaJ.addElement("Jedi [imie=" + nazwa + ", kolor miecza=" + miecz + ", moc=" + moc + " ,strona=" + strona +"]");
 	}
+	
+	public int getJediID(Jedi j) {
+		return ID_Jedi;
+	}
+	
 	@Override
 	public String toString() {
 		return "Jedi [imie=" + nazwa + ", kolor miecza=" + miecz + ", moc=" + moc + " ,strona=" + strona +"]";

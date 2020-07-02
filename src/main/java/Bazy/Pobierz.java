@@ -25,8 +25,10 @@ public class Pobierz {
 		new Jedi(dataa.getInt("ID_Jedi"),dataa.getString("Nazwa"), dataa.getString("Miecz"), dataa.getInt("Moc"), dataa.getString("Strona"));
 		dataa =s.executeQuery("SELECT * FROM ZAKON");
 		while(dataa.next())
-		new Zakon(dataa.getInt("ID_Zakon"),dataa.getString("Nazwa"));		
-		
+		new Zakon(dataa.getInt("ID_Zakon"),dataa.getString("Nazwa"));
+		dataa =s.executeQuery("Select * FROM ZAKON_JEDI;");
+	//	while(dataa.next())
+	//	new Zakon_Jedi(dataa.getInt("ID_Zakon_Jedi"),dataa.getInt("Zakon_ID"),dataa.getInt("Jedi_ID"));
 		
 		c.close();
 	
@@ -34,18 +36,9 @@ public class Pobierz {
 	
 } catch (Exception e) {
 	e.printStackTrace();
+}	
 }
-	
-	
-
-	for(Zakon z : Zakon.listaZakon)
-		System.out.println(z);
-	
-	
 }
-
-
-	}
 
 
 
