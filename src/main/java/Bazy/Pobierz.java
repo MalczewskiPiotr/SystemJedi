@@ -18,8 +18,7 @@ public class Pobierz {
 		Statement s =  c.createStatement();
 		
 		ResultSet dataa =s.executeQuery("SELECT * FROM JEDI");
-		
-	//	ResultSet data3 =s.executeQuery("SELECT * FROM ZAKON_JEDI");
+
 		
 		while(dataa.next())
 		new Jedi(dataa.getInt("ID_Jedi"),dataa.getString("Nazwa"), dataa.getString("Miecz"), dataa.getInt("Moc"), dataa.getString("Strona"));
@@ -27,8 +26,8 @@ public class Pobierz {
 		while(dataa.next())
 		new Zakon(dataa.getInt("ID_Zakon"),dataa.getString("Nazwa"));
 		dataa =s.executeQuery("Select * FROM ZAKON_JEDI;");
-	//	while(dataa.next())
-	//	new Zakon_Jedi(dataa.getInt("ID_Zakon_Jedi"),dataa.getInt("Zakon_ID"),dataa.getInt("Jedi_ID"));
+		while(dataa.next())
+		new Zakon_Jedi(dataa.getInt("ID_Zakon_Jedi"),dataa.getInt("Zakon_ID"),dataa.getInt("Jedi_ID"));
 		
 		c.close();
 	

@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,9 +26,10 @@ import Bazy.Zakon;
 
 
 public class Panel1 extends JPanel {
-	private Pobierz pobierz;
+
+	
 	public Panel1(Pobierz pobierz, PobierzJedi pobierzJedi) {
-		this.pobierz=pobierz;
+		
 		pobierz.pobierz();
 		pobierzJedi.PobierzJedi();
 		setLayout(null);
@@ -78,24 +80,7 @@ public class Panel1 extends JPanel {
 		eksportZ.setBounds(40, 600, 90, 30);
 		add(eksportZ);
 		
-		class EksportZ implements ActionListener{
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(e.getSource()==eksportZ) { 
-					JFileChooser fc=new JFileChooser();    
-				    int i=fc.showOpenDialog(eksportZ);    
-				    if(i==JFileChooser.APPROVE_OPTION){    
-				        File f=fc.getSelectedFile();    
-				        String filepath=f.getPath();    
-				        t1.setText(filepath);		
-				    }    
-				}    
-				}
-				
-		}
-		
-		eksportZ.addActionListener(new EksportZ());		
+		eksportuj(t1, eksportZ, Zakon.listaZ);		
 		
 		JButton WyczyscZ = new JButton("Wyczyść");
 		WyczyscZ.setBounds(280, 650, 90, 30);
@@ -122,11 +107,10 @@ public class Panel1 extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 						
-				if(e.getSource()==ZarejestrujZ) { 
-					Connection c;
+				if(e.getSource()==ZarejestrujZ) {					
 					if(nazwaZakonTF.getText()!="") {
 					try {
-						c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/SZJ","postgres","zaq1@WSX");
+						Connection c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/SZJ","postgres","zaq1@WSX");
 						String query = " INSERT INTO ZAKON  (NAZWA) VALUES"  + " ('"+nazwaZakonTF.getText()+"')";
 						PreparedStatement preparedStmt = c.prepareStatement(query);
 						preparedStmt.execute();
@@ -206,12 +190,13 @@ public class Panel1 extends JPanel {
 	JTextField t2 =new JTextField();  
 	t2.setBounds(650, 580, 250 ,30);  
     add(t2);
-    
     importuj(importJ, t2);
     
 	JButton eksportJ = new JButton("Eksport");
 	eksportJ.setBounds(540, 600, 90, 30);
 	add(eksportJ);
+	eksportuj(t2, eksportJ, Jedi.listaJ);
+	
 	
 	JButton WyczyscJ = new JButton("Wyczyść");
 	WyczyscJ.setBounds(780, 650, 90, 30);
@@ -245,11 +230,9 @@ public class Panel1 extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 					
 			if(e.getSource()==ZarejestrujJ) { 
-				Connection c;
-				
 				if(nazwaJediTF.getText()!=""&&wybierzKolor.getSelectedItem()!=""&&(r1.isSelected()==true||r2.isSelected()==true)) {
 				try {
-					c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/SZJ","postgres","zaq1@WSX");
+					Connection c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/SZJ","postgres","zaq1@WSX");
 					
 					String stronaStr = null;
 					
@@ -282,25 +265,52 @@ public class Panel1 extends JPanel {
 
 
 	}
-	
-	public void importuj(JButton importJ, JTextField t2) {
-		class ImportJ implements ActionListener{
+
+	public void eksportuj(JTextField tf, JButton jb, DefaultListModel<String> lista) {
+		class Eksport implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(e.getSource()==importJ) { 
+				if(e.getSource()==jb) { 
 					JFileChooser fc=new JFileChooser();    
-				    int i=fc.showOpenDialog(importJ);    
+				    int i=fc.showOpenDialog(jb);    
 				    if(i==JFileChooser.APPROVE_OPTION){    
 				        File f=fc.getSelectedFile();    
 				        String filepath=f.getPath();    
-				        t2.setText(filepath);
+				        tf.setText(filepath);
+				        try {
+							PrintWriter output = new PrintWriter(filepath);
+							output.print(lista);							
+						} catch (FileNotFoundException e2) {
+							e2.printStackTrace();
+						}
+						}    
+				}    
+				}
+				
+		}
+		
+		jb.addActionListener(new Eksport());
+	}
+	
+	public void importuj(JButton jb, JTextField tf) {
+		class Import implements ActionListener{
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource()==jb) { 
+					JFileChooser fc=new JFileChooser();    
+				    int i=fc.showOpenDialog(jb);    
+				    if(i==JFileChooser.APPROVE_OPTION){    
+				        File f=fc.getSelectedFile();    
+				        String filepath=f.getPath();    
+				        tf.setText(filepath);
 				        
 				    }    
 				}    
 				}	
 		}
-		importJ.addActionListener(new ImportJ());
+		jb.addActionListener(new Import());
 	}
 	@Override
 	public Dimension getPreferredSize() {

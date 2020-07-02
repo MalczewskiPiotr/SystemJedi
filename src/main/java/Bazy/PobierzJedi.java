@@ -13,17 +13,15 @@ import com.jdbc.Osoba;
 
 public class PobierzJedi {
 
-	//public List<Jedi> listaJBZ;
+	
 	public static   DefaultListModel<Jedi> listaJBZ = new DefaultListModel<>();
 	
 	public void PobierzJedi() {
-		listaJBZ.clear();
+		listaJBZ.clear();	
 		
 		try {
-			Connection c =DriverManager.getConnection("jdbc:postgresql://localhost:5432/SZJ","postgres",
-					"zaq1@WSX");
+			Connection c =DriverManager.getConnection("jdbc:postgresql://localhost:5432/SZJ","postgres","zaq1@WSX");
 			Statement s =  c.createStatement();
-			
 			ResultSet data =s.executeQuery("Select * FROM ZAKON_JEDI;");
 			
 		while(data.next()) {
@@ -32,11 +30,12 @@ public class PobierzJedi {
 			Jedi jediBZ = null;
 			for(Jedi j : Jedi.listaJedi) {
 				jediBZ=j;
-				if(j.getJediID(j)==nrJedi && przypisany == false);
+				if(j.getJediID(j)==nrJedi && przypisany == false)
 				przypisany = true;
 			}
 			if(przypisany == false);
-			listaJBZ.addElement(jediBZ);			
+			listaJBZ.addElement(jediBZ);
+			
 			}
 		
 	} catch (Exception e) {

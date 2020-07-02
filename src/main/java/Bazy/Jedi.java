@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 
-import com.jdbc.Osoba;
+
 public class Jedi {
 	public static List<Jedi> listaJedi = new ArrayList<Jedi>();
 	public static DefaultListModel<String> listaJ = new DefaultListModel<>();
